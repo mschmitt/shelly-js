@@ -1,9 +1,10 @@
 console.log("Script starts.")
 
-let RestUrl;
-let TurnOnBelow;
-let TurnOffAbove;
-let AlwaysOnOffHours;
+// Configuration from KVS Key-Value Store
+let RestUrl;          // URL with sensor data. Compatible with IOBroker REST and Shelly Cloud
+let TurnOnBelow;      // Lower threshold
+let TurnOffAbove;     // Upper threshold
+let AlwaysOnOffHours; // Map of always on/off hours: { "0": "off", "1": "off", "2": "off" } etc.
 
 function actOnRestResponse(response, error_code, error_message) {
   let HourOfDay = new Date().getHours();
@@ -19,7 +20,7 @@ function actOnRestResponse(response, error_code, error_message) {
     // console.log("Handling valid response: " + response.body);
     let data = JSON.parse(response.body);
     // IoBroker response is in data.rh
-    // Shelly Cloud response is in data.data.device_status.humidity:0\
+    // Shelly Cloud response is in data.data.device_status.humidity:0
     if (typeof data.rh === 'undefined') {
       data = data.data.device_status['humidity:0'];
     }
