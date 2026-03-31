@@ -38,7 +38,7 @@ function actOnRestResponse(response, error_code, error_message) {
   }
 }
 
-Timer.set(10 * 1000, true, function() {
+Timer.set(60 * 1000, true, function() {
   Shelly.call("KVS.Get", { key: "RestUrl"}, function(result, error_code, error_message, userdata){ RestUrl = result.value; });
   Shelly.call("KVS.Get", { key: "TurnOnBelow"}, function(result, error_code, error_message, userdata){ TurnOnBelow = result.value; });
   Shelly.call("KVS.Get", { key: "TurnOffAbove"}, function(result, error_code, error_message, userdata){ TurnOffAbove = result.value; });
