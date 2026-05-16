@@ -16,7 +16,7 @@ function actOnRestResponse(response, error_code, error_message) {
       console.log("Hour " + HourOfDay + ", always off");
       Shelly.call("Switch.Set", { id: 0, on: false });
     }
-  } else if (response.code === 200) {
+  } else if (error_code === 0 && response.code === 200) {
     // console.log("Handling valid response: " + response.body);
     let data = JSON.parse(response.body);
     // IoBroker response is in data.rh
@@ -34,11 +34,11 @@ function actOnRestResponse(response, error_code, error_message) {
       console.log("Relative humidity: " + data.rh + " - TurnOffAbove: " + TurnOffAbove + " - TurnOnBelow: " + TurnOnBelow + " - No Action");
     }
   }else{
-    console.log("No usable response: " + error_message)
+    console.log("No usable response: " + error_message + ", error code: " + error_code)
   }
 }
 
-Timer.set(60 * 1000, true, function() {
+Timer.set(10 * 1000, true, function() {
   Shelly.call("KVS.Get", { key: "RestUrl"}, function(result, error_code, error_message, userdata){ RestUrl = result.value; });
   Shelly.call("KVS.Get", { key: "TurnOnBelow"}, function(result, error_code, error_message, userdata){ TurnOnBelow = result.value; });
   Shelly.call("KVS.Get", { key: "TurnOffAbove"}, function(result, error_code, error_message, userdata){ TurnOffAbove = result.value; });
